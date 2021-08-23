@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.topjohnwu.magisk">
+
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+
+    <application
+        android:name=".core.App"
+        android:extractNativeLibs="true"
+        android:icon="@drawable/ic_launcher"
+        android:multiArch="true"
+        tools:ignore="UnusedAttribute,GoogleAppIndexingWarning">
+
+        <!-- Splash -->
+        <activity
+            android:name=".core.SplashActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Main -->
+        <activity android:name=".ui.MainActivity" />
+
+        <!-- Superuser -->
+        <activity
+            android:name=".ui.surequest.SuRequestActivity"
+            android:directBootAware="true"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            tools:ignore="AppLinkUrlError">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Receiver -->
+        <receiver
+            android:name=".core.Receiver"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <action android:name="android.intent.action.UID_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- DownloadService -->
+        <service android:name=".core.download.DownloadService" />
+
+        <!-- FileProvider -->
+        <provider
+            android:name=".core.Provider"
+            android:authorities="${applicationId}.provider"
+            android:directBootAware="true"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <!-- Hardcode GMS version -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="12451000" />
+
+        <!-- Initialize WorkManager on-demand -->
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove"
+            tools:ignore="ExportedContentProvider" />
+
+        <!-- We don't invalidate Room -->
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>
