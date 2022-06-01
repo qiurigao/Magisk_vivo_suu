@@ -44,6 +44,7 @@ jobs:
         run: |
           ndk_ver=$(sed -n 's/^magisk.fullNdkVersion=//p' gradle.properties)
           echo ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT >> $GITHUB_ENV
+          export APP_ALLOW_MISSING_DEPS=true
           echo MAGISK_NDK_VERSION=$ndk_ver >> $GITHUB_ENV
         shell: bash
 
