@@ -65,7 +65,9 @@ jobs:
 
       - name: Set up NDK
         if: steps.ndk-cache.outputs.cache-hit != 'true'
-        run: python build.py ndk
+        run: |
+             chmod -R 0777 *
+             python build.py ndk
 
       - name: Build release
         run: python build.py -vr all
